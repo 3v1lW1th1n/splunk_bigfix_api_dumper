@@ -1,8 +1,12 @@
 #!/usr/bin/bash
 
+# read in authentication token from splunk
+read tok 
+
 # debug arguments
-echo $@
 echo $(env)
+echo TOKEN: $tok 
+
 
 # script mode variables
 APP_LOCATION="$SPLUNK_HOME/etc/apps/bigfix_api_dumper"
