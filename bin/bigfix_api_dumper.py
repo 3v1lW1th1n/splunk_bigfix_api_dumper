@@ -35,7 +35,7 @@ print(f"authentication token is {AUTH_TOKEN}")
 # object for interacting with splunk's collections api
 splunk_collections_session = requests.Session()
 
-splunk_collections_session.headers.update({"Authorization", f"Bearer {AUTH_TOKEN}"})
+splunk_collections_session.headers.update({"Authorization": f"Bearer {AUTH_TOKEN}"})
 
 collection_url = "https://localhost:8089/servicesNS/nobody/bigfix_api_dumper/storage/collections/config" 
 
