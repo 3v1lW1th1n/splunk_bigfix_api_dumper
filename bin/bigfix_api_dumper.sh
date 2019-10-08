@@ -2,11 +2,12 @@
 
 # read in authentication token from splunk
 read AUTH_TOKEN 
+export AUTH_TOKEN 
 
 # debug arguments
-echo $(env)
-echo TOKEN: $AUTH_TOKEN 
-export AUTH_TOKEN 
+#echo $(env)
+#echo TOKEN: $AUTH_TOKEN 
+
 # override splunk's pythonpath
 unset PYTHONPATH
 
@@ -19,12 +20,12 @@ SCRIPT_LOCATION="$APP_LOCATION/bin/bigfix_api_dumper.py"
 SCRIPT_CMD="$SCRIPT_LOCATION $SCRIPT_ARGS"
 VENV_PATH="$APP_LOCATION/bin/venv"
 # debug SCRIPT_CMD
-echo $SCRIPT_CMD
+#echo $SCRIPT_CMD
 
 # create the venv
 if [[ ! -d $VENV_PATH ]];
 then
-    echo "attempting to configure virtualenv"
+    echo "attempting to configure virtualenv in $VENV_PATH"
     /usr/bin/virtualenv-3 $VENV_PATH
     source $VENV_PATH/bin/activate
     # install prereqs
