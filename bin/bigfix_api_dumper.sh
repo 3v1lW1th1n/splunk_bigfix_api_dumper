@@ -33,4 +33,4 @@ fi
 
 # call python 3 to execute the bigfix api dumper script
 source $VENV_PATH/bin/activate
-/usr/bin/python3 $SCRIPT_CMD
+python3 $SCRIPT_CMD
