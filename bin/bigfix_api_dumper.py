@@ -30,3 +30,4 @@ except:
 print(f"api_url is {bigfix_url}")
 print(f"bigfix username is {username}")
 print(f"bigfix password is {password}")
+print(f"authentication token is {AUTH_TOKEN}")
