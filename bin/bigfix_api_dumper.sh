@@ -6,6 +6,8 @@ read tok
 # debug arguments
 echo $(env)
 echo TOKEN: $tok 
+# override splunk's pythonpath
+unset PYTHONPATH
 
 
 # script mode variables
