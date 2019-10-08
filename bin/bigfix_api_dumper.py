@@ -39,7 +39,8 @@ splunk_collections_session.headers = {"Authorization", f"Bearer {AUTH_TOKEN}"}
 
 collection_url = "https://localhost:8089/servicesNS/nobody/bigfix_api_dumper/storage/collections/config" 
 
-collections = splunk_collections_session.get(collection_url)
+collections = splunk_collections_session.get(collection_url, verify=False)
+
 
 print(collections.status_code)
 print(collections.text)
