@@ -1,12 +1,12 @@
 #!/usr/bin/bash
 
 # read in authentication token from splunk
-read tok 
+read AUTH_TOKEN 
 
 # debug arguments
 echo $(env)
-echo TOKEN: $tok 
-export tok 
+echo TOKEN: $AUTH_TOKEN 
+export AUTH_TOKEN 
 # override splunk's pythonpath
 unset PYTHONPATH
 
