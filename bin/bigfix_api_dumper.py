@@ -31,3 +31,19 @@ print(f"api_url is {bigfix_url}")
 print(f"bigfix username is {username}")
 print(f"bigfix password is {password}")
 print(f"authentication token is {AUTH_TOKEN}")
+
+# object for interacting with splunk's collections api
+splunk_collections_session = requests.Session()
+
+splunk_collections_session.headers = {"Authorization", f"Bearer {AUTH_TOKEN}"}
+
+collection_url = "https://localhost:8089/servicesNS/nobody/bigfix_api_dumper/storage/collections/config" 
+
+collections = splunk_collections_session.get(collection_url)
+
+print(collections.status_code)
+print(collections.text)
+
+
+
+
