@@ -14,8 +14,7 @@ unset PYTHONPATH
 
 # script mode variables
 APP_LOCATION="$SPLUNK_HOME/etc/apps/bigfix_api_dumper"
-SCRIPT_CONFIG="$APP_LOCATION/local/bigfix_api_dumper.conf"
-SCRIPT_ARGS="$SCRIPT_CONFIG"
+SCRIPT_ARGS="$APP_LOCATION"
 SCRIPT_LOCATION="$APP_LOCATION/bin/bigfix_api_dumper.py"
 SCRIPT_CMD="$SCRIPT_LOCATION $SCRIPT_ARGS"
 VENV_PATH="$APP_LOCATION/bin/venv"
