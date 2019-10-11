@@ -87,7 +87,7 @@ kvstore_keys = [ entry['_key'] for entry in kvstore ]
 
 # new items that were added to bigfix and need to be created in the keystore
 new_keys = []
-for name,properties in bigfix_database:
+for name,properties in bigfix_database.items():
     if not name in kvstore_keys:
         # create a new item in the kvstore
         new_key = {
