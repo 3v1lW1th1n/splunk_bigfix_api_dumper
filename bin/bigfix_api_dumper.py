@@ -6,6 +6,7 @@ from os import environ
 import sys
 from bigfix_api import RelevanceQueryDumper
 import configparser
+import json
 
 # extract important variables that were passed in from the wrapper script
 AUTH_TOKEN = environ['AUTH_TOKEN']
@@ -45,5 +46,55 @@ collection_url = "https://localhost:8089/servicesNS/nobody/bigfix_api_dumper/sto
 # object for interacting with BigFix
 relevance_api_url = bigfix_url + "/api/query"
 bigfix_dumper = RelevanceQueryDumper(relevance_api_url, username, password, verify=False)
-query_output = bigfix_dumper.dump(["os", "ip address"])
-print(query_output)
+# get the a dump from bigfix
+bigfix_database = bigfix_dumper.dump(["os", "ip address"])
+#print(bigfix_database)
+
+
+### perform database update opertions
+# get all the data in the kvstore
+kvstore_request = splunk_collections_session.get(collection_url)
+kvstore = json.loads(kvstore_request.text)
+
+# missing items that were removed from bigfix
+deleted_keys = []
+for item in kvstore:
+    # check if we need to update an item
+    if item["_key"] in bigfix_database:
+        # perform update on kvstore
+        splunk_collections_session.post(
+            collection_url + "/" + item["_key"],
+            json={
+                "_key": item["_key"],
+                "data": bigfix_database["_key"]
+                }
+        )
+    else: 
+        # delete the key from the kvstore, and keep track of missing items
+        deleted_keys.append(item["_key"])
+        splunk_collections_session.delete(
+            collection_url + "/" + item["_key"]
+        )
+print(f"deleted keys: {deleted_keys}")
+
+
+# create a list of DB keys to check against
+kvstore_keys = [ entry['_key'] for entry in kvstore ]
+
+# new items that were added to bigfix and need to be created in the keystore
+new_keys = []
+for name,properties in bigfix_database:
+    if not name in kvstore_keys:
+        # create a new item in the kvstore
+        new_key = {
+                "_key": name,
+                "data": properties
+            }
+        new_keys.append(new_key)
+        splunk_collections_session.post(
+            collection_url,
+            json = new_key
+        )
+
+print(f"new keys: {new_keys}")
+
