@@ -30,10 +30,11 @@ try:
 except:
     sys.exit("password missing from config")
 
-print(f"api_url is {bigfix_url}")
-print(f"bigfix username is {username}")
-print(f"bigfix password is {password}")
-print(f"authentication token is {AUTH_TOKEN}")
+if __debug__:
+    print(f"api_url is {bigfix_url}")
+    print(f"bigfix username is {username}")
+    print(f"bigfix password is {password}")
+    print(f"authentication token is {AUTH_TOKEN}")
 
 # object for interacting with splunk's collections api
 splunk_collections_session = requests.Session()
