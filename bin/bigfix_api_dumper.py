@@ -98,14 +98,11 @@ new_keys = []
 for name,properties in bigfix_database.items():
     if not name in kvstore_keys:
         # create a new item in the kvstore
-        new_key = {
-                "_key": name,
-                "data": properties
-            }
-        new_keys.append(new_key)
+        new_record = create_db_obj(name, properties)
+        new_keys.append(name)
         splunk_collections_session.post(
             collection_url,
-            json = new_key,
+            json = new_record,
             verify = splunk_verify
         )
 
