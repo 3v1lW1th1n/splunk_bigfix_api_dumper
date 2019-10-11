@@ -68,7 +68,7 @@ for item in kvstore:
             collection_url + "/" + item["_key"],
             json={
                 "_key": item["_key"],
-                "data": bigfix_database["_key"]
+                "data": bigfix_database[item["_key"]]
                 },
             verify = splunk_verify
         )
