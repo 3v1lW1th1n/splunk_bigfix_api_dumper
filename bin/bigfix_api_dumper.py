@@ -58,7 +58,7 @@ def create_db_obj(name, properties):
     returns pivoted object to feed into the kvstore"""
     json_object = {"_key": name}
     json_object.update(properties)
-    return json.dumps(json_object)
+    return json_object
 
 
 ### perform database update opertions
