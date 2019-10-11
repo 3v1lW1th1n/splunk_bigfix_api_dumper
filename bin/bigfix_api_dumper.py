@@ -71,20 +71,21 @@ kvstore = json.loads(kvstore_request.text)
 deleted_keys = []
 for item in kvstore:
     # check if we need to update an item
-    if item["_key"] in bigfix_database:
+    key = item["_key"]
+    if key in bigfix_database:
         # perform update on kvstore
-        new_record = create_db_obj(item["_key"], 
-            bigfix_database[item["_key"]])
+        new_record = create_db_obj(key, 
+            bigfix_database[key])
         splunk_collections_session.post(
-            collection_url + "/" + item["_key"],
+            collection_url + "/" + key,
             json=new_record,
             verify = splunk_verify
         )
     else: 
         # delete the key from the kvstore, and keep track of missing items
-        deleted_keys.append(item["_key"])
+        deleted_keys.append(key)
         splunk_collections_session.delete(
-            collection_url + "/" + item["_key"],
+            collection_url + "/" + key,
             verify = splunk_verify
         )
 print(f"deleted keys: {deleted_keys}")
