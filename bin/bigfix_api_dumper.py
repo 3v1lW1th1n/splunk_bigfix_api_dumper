@@ -52,6 +52,15 @@ bigfix_database = bigfix_dumper.dump(["os", "ip address"])
 
 splunk_verify = False
 
+# create db object
+def create_db_obj(name, properties):
+    """ takes in a computer name and dict of properties from bigfix
+    returns pivoted object to feed into the kvstore"""
+    json_object = {"_key": name}
+    json_object.update(properties)
+    return json.dumps(json_object)
+
+
 ### perform database update opertions
 # get all the data in the kvstore
 kvstore_request = splunk_collections_session.get(collection_url,
@@ -64,12 +73,11 @@ for item in kvstore:
     # check if we need to update an item
     if item["_key"] in bigfix_database:
         # perform update on kvstore
+        new_record = create_db_obj(item["_key"], 
+            bigfix_database[item["_key"]])
         splunk_collections_session.post(
             collection_url + "/" + item["_key"],
-            json={
-                "_key": item["_key"],
-                "data": bigfix_database[item["_key"]]
-                },
+            json=new_record,
             verify = splunk_verify
         )
     else: 
