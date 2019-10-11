@@ -50,10 +50,12 @@ bigfix_dumper = RelevanceQueryDumper(relevance_api_url, username, password, veri
 bigfix_database = bigfix_dumper.dump(["os", "ip address"])
 #print(bigfix_database)
 
+splunk_verify = False
 
 ### perform database update opertions
 # get all the data in the kvstore
-kvstore_request = splunk_collections_session.get(collection_url)
+kvstore_request = splunk_collections_session.get(collection_url,
+    verify = splunk_verify)
 kvstore = json.loads(kvstore_request.text)
 
 # missing items that were removed from bigfix
@@ -67,13 +69,15 @@ for item in kvstore:
             json={
                 "_key": item["_key"],
                 "data": bigfix_database["_key"]
-                }
+                },
+            verify = splunk_verify
         )
     else: 
         # delete the key from the kvstore, and keep track of missing items
         deleted_keys.append(item["_key"])
         splunk_collections_session.delete(
-            collection_url + "/" + item["_key"]
+            collection_url + "/" + item["_key"],
+            verify = splunk_verify
         )
 print(f"deleted keys: {deleted_keys}")
 
@@ -93,7 +97,8 @@ for name,properties in bigfix_database:
         new_keys.append(new_key)
         splunk_collections_session.post(
             collection_url,
-            json = new_key
+            json = new_key,
+            verify = splunk_verify
         )
 
 print(f"new keys: {new_keys}")
