@@ -88,7 +88,7 @@ for item in kvstore:
             collection_url + "/" + key,
             verify = splunk_verify
         )
-print(f"deleted keys: {deleted_keys}")
+print(json.dumps({"deleted_keys":deleted_keys}")
 
 
 # create a list of DB keys to check against
@@ -107,5 +107,5 @@ for name,properties in bigfix_database.items():
             verify = splunk_verify
         )
 
-print(f"new keys: {new_keys}")
+print(json.dumps({"new_keys":new_keys}")
 
