@@ -25,7 +25,7 @@ VENV_PATH="$APP_LOCATION/bin/venv"
 if [[ ! -d $VENV_PATH ]];
 then
     echo "attempting to configure virtualenv in $VENV_PATH"
-    /usr/bin/virtualenv-3 $VENV_PATH
+    /usr/local/bin/virtualenv $VENV_PATH
     source $VENV_PATH/bin/activate
     # install prereqs
     pip3 install requests lxml
