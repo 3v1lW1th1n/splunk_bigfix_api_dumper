@@ -47,7 +47,7 @@ collection_url = "https://localhost:8089/servicesNS/nobody/bigfix_api_dumper/sto
 relevance_api_url = bigfix_url + "/api/query"
 bigfix_dumper = RelevanceQueryDumper(relevance_api_url, username, password, verify=False)
 # get the a dump from bigfix
-bigfix_database = bigfix_dumper.dump(["os", "ip address","User name","License Type","Last Report Time"])
+bigfix_database = bigfix_dumper.dump(["os", "ip address","User name","License Type"])
 #print(bigfix_database)
 
 splunk_verify = False
