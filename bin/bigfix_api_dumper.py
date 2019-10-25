@@ -61,7 +61,7 @@ def create_db_obj(name, properties):
     return json_object
 
 
-### perform database update opertions
+### perform database update operations
 # get all the data in the kvstore
 kvstore_request = splunk_collections_session.get(collection_url,
     verify = splunk_verify)
@@ -70,15 +70,14 @@ kvstore = json.loads(kvstore_request.text)
 # missing items that were removed from bigfix
 deleted_keys = []
 for item in kvstore:
-    # check if we need to update an item
+    # check if we need to upsert an item
     key = item["_key"]
-    if key in bigfix_database:
+    record = create_db_obj(key, bigfix_database[key])
+    if record in bigfix_database:
         # perform update on kvstore
-        new_record = create_db_obj(key, 
-            bigfix_database[key])
         splunk_collections_session.post(
             collection_url + "/" + key,
-            json=new_record,
+            json=record,
             verify = splunk_verify
         )
     else: 
