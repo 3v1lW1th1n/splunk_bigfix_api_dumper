@@ -75,7 +75,7 @@ for item in kvstore:
     if key in bigfix_database:
         # perform update on kvstore only if the records are different
         record = create_db_obj(key, bigfix_database[key])
-        if not record in bigfix_database:
+        if not record in kvstore:
             splunk_collections_session.post(
                 collection_url + "/" + key,
                 json=record,
