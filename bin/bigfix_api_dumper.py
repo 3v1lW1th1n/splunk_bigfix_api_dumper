@@ -67,19 +67,20 @@ kvstore_request = splunk_collections_session.get(collection_url,
     verify = splunk_verify)
 kvstore = json.loads(kvstore_request.text)
 
-# missing items that were removed from bigfix
+# this loop performs update and delete operations on the kvstore
 deleted_keys = []
 for item in kvstore:
-    # check if we need to upsert an item
+    # check for matching keys
     key = item["_key"]
-    record = create_db_obj(key, bigfix_database[key])
-    if record in bigfix_database:
-        # perform update on kvstore
-        splunk_collections_session.post(
-            collection_url + "/" + key,
-            json=record,
-            verify = splunk_verify
-        )
+    if key in bigfix_database:
+        # perform update on kvstore only if the records are different
+        record = create_db_obj(key, bigfix_database[key])
+        if not record in bigfix_database:
+            splunk_collections_session.post(
+                collection_url + "/" + key,
+                json=record,
+                verify = splunk_verify
+            )
     else: 
         # delete the key from the kvstore, and keep track of missing items
         deleted_keys.append(key)
